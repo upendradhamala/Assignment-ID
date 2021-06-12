@@ -8,7 +8,6 @@ In the home directory run `npm install` to install backend dependencies
 
 Move to frontend directory and run `npm install` to install frontend dependencies
 
-### Get Started
+### Ready for running
 
-
-
+Move to home directory and run `npm run dev` and there you go
