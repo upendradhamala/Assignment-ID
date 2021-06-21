@@ -9,10 +9,12 @@ const Home = () => {
   const [name, setName] = useState(user?.name)
   const [email, setEmail] = useState(user?.email)
   const [address, setAddress] = useState('')
+  const [loading, setLoading] = useState(false)
   const [username, setUsername] = useState(user?.username)
   const [image, setImage] = useState(user?.picture)
   const [show, setShow] = useState(false)
   const handleImage = async (e) => {
+    setLoading(true)
     const file = e.target.files[0]
     const formData = new FormData()
     formData.append('file', file)
@@ -30,6 +32,7 @@ const Home = () => {
     })
       .then(function (res) {
         setImage(res.data.url)
+        setLoading(false)
       })
       .catch(function (err) {
         console.error(err)
@@ -56,7 +59,6 @@ const Home = () => {
     }, 3000)
   }
   useEffect(() => {
-   
     const userFind = async () => {
       const { data } = await axios.get(`/${email}`)
       console.log('value of data', data)
@@ -89,7 +91,11 @@ const Home = () => {
         <div className='profileInfo'>
           <form onSubmit={formHandler}>
             <div className='control-label'>
-              <img className='imgperson' src={image} alt='' />
+              <img
+                className='imgperson'
+                src={loading ? '/Images/loader1.gif' : image}
+                alt=''
+              />
 
               <input
                 type='file'
