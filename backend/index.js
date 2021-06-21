@@ -13,17 +13,6 @@ connectDB()
 app.use(express.json())
 const __dirname = path.resolve()
 
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '/frontend/build')))
-  app.get('*', (req, res) =>
-    res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
-  )
-} else {
-  app.get('/', async (req, res) => {
-    res.send('API is running...')
-  })
-}
-
 app.post(
   '/register',
   asyncHandler(async (req, res) => {
@@ -31,7 +20,6 @@ app.post(
       const { name, address, image, username, email } = req.body
 
       const userExists = await UserAuth.findOne({ email })
-      console.log('already there')
 
       if (userExists) {
         ;(userExists.name = name),
@@ -61,7 +49,9 @@ app.get(
   asyncHandler(async (req, res) => {
     try {
       console.log('reached')
+      console.log('email', req.params.email)
       const user = await UserAuth.findOne({ email: req.params.email })
+      console.log('sdfsd', user)
       if (user) {
         console.log(user)
         res.status(201).json(user)
@@ -72,6 +62,16 @@ app.get(
     }
   })
 )
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '/frontend/build')))
+  app.get('*', (req, res) =>
+    res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
+  )
+} else {
+  app.get('/', async (req, res) => {
+    res.send('API is running...')
+  })
+}
 app.use((err, req, res, next) => {
   const statusCode = res.statusCode === 200 ? 500 : res.statusCode
   console.log('err', err)

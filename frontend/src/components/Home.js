@@ -56,9 +56,10 @@ const Home = () => {
     }, 3000)
   }
   useEffect(() => {
+   
     const userFind = async () => {
       const { data } = await axios.get(`/${email}`)
-
+      console.log('value of data', data)
       setAddress(data.address)
       setUsername(data.username)
       setName(data.name)
@@ -71,7 +72,6 @@ const Home = () => {
       {console.log('user is', user)}
 
       <div className='navbar'>
-        {console.log('msg', msg)}
         <ul>
           <li>Home</li>
           <li>About Us</li>
